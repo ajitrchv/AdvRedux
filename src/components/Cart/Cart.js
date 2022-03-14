@@ -5,9 +5,13 @@ import { useSelector } from "react-redux";
 
 const Cart = (props) => {
   const cartItems = useSelector((state) => state.cart.items);
+  const isCartEmpty = cartItems.length === 0;
+  //console.log('here is vcart value RN, ',isCartEmpty)
+  const trendData = ' is empty! Add something.';
   return (
     <Card className={classes.cart}>
-      <h2>Your Shopping Cart</h2>
+      <h2>Your Shopping Cart{isCartEmpty && trendData}</h2>
+    {!isCartEmpty &&
       <ul>
         {cartItems.map((item) => (
           <CartItem
@@ -20,7 +24,7 @@ const Cart = (props) => {
               price: item.price }}
           />
         ))}
-      </ul>
+      </ul>}
     </Card>
   );
 };
