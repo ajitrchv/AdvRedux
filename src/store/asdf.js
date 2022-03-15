@@ -1,11 +1,11 @@
-import { Fragment, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { Fragment, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Cart from "./components/Cart/Cart";
-import Layout from "./components/Layout/Layout";
-import Products from "./components/Shop/Products";
-import { uiActions } from "./store/ui-slice";
-import Notification from "./components/UI/Notification.js";
+import Cart from './components/Cart/Cart';
+import Layout from './components/Layout/Layout';
+import Products from './components/Shop/Products';
+import { uiActions } from './store/ui-slice';
+import Notification from './components/UI/Notification';
 
 let isInitial = true;
 
@@ -16,46 +16,46 @@ function App() {
   const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
-    console.log("cart data changed");
-    console.log(cart);
     const sendCartData = async () => {
       dispatch(
         uiActions.showNotification({
-          status: "Pending",
-          title: "Sending...",
-          message: "Sending Cart Data!",
+          status: 'pending',
+          title: 'Sending...',
+          message: 'Sending cart data!',
         })
       );
       const response = await fetch(
-        "https://reactretail-5d167-default-rtdb.firebaseio.com/cart.json",
+        'https://react-http-6b4a6.firebaseio.com/cart.json',
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify(cart),
         }
       );
+
       if (!response.ok) {
         throw new Error('Sending cart data failed.');
       }
-      //const responseData = await response.json();
 
       dispatch(
         uiActions.showNotification({
-          status: "Success",
-          title: "Success..",
-          message: "Sent Cart Data Succesfully!",
+          status: 'success',
+          title: 'Success!',
+          message: 'Sent cart data successfully!',
         })
       );
     };
-    if(isInitial){
+
+    if (isInitial) {
       isInitial = false;
       return;
     }
+
     sendCartData().catch((error) => {
       dispatch(
         uiActions.showNotification({
-          status: "Error",
-          title: "Error!",
-          message: error.message,
+          status: 'error',
+          title: 'Error!',
+          message: 'Sending cart data failed!',
         })
       );
     });
@@ -71,7 +71,7 @@ function App() {
         />
       )}
       <Layout>
-        {cartShow && <Cart />}
+        {showCart && <Cart />}
         <Products />
       </Layout>
     </Fragment>
